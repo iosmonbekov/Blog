@@ -3,10 +3,44 @@
 {% block title %}{{article.article_title}}{% endblock %}
 
 {% block content %} 
-
-    <h2>{{article.article_title}}</h2>
+    <br>
+    <h1>{{article.article_title}}</h1>
     <p>{{article.article_text}}</p>
 
-    <em>{{article.pub_date}}</em>
+    <em>Released: <strong>{{article.pub_date}}</strong></em>
+
+    <br>
+    <br>
+    <hr>
+
+    <form action="{% url 'articles:leave_comment' article.id %}" method="post">
+
+        {% csrf_token %}
+
+        <input class="form-control" type="text" required placeholder="Enter your name" name="name" ><br>
+        <textarea class="form-control" name="text" required placeholder="Leave your comment..." cols="30" rows="10"></textarea>
+        <br>
+        <button class="btn btn-success" type="submit">Leave Comment</button>
+    </form>
+
+    <br>
+
+    <h4>Comments: </h4>
+    <hr>
+
+        {% if latest_comments_list %}
+            {% for c in latest_comments_list %}
+                <p>
+                    <strong>{{c.author_name}}:</strong>
+                    <p>{{c.comment_text}}</p>
+                </p>
+            {% endfor %}
+        {% else %}
+            No Comments yet...
+        {% endif %}
+
+    <hr>
+
+    
 
 {% endblock %}
